@@ -37,10 +37,19 @@ import { log } from 'console'
 // }
 // 类型注解
 
-function greeter(person: string) {
-  return 'Hello, ' + person
+// function greeter(person: string) {
+//   return 'Hello, ' + person
+// }
+// let user = 'Jane User'
+// console.log(greeter(user))
+
+// 接口
+interface Person {
+  firstName: string
+  lastName: string
 }
-
-let user = 'Jane User'
-
+function greeter(person: Person): string {
+  return `hello,${person.firstName}-${person.lastName}`
+}
+let user = { firstName: 'John', lastName: 'Tom' }
 console.log(greeter(user))
