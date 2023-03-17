@@ -141,3 +141,53 @@ function show2(abc: string): string {
   return abc.split('').reverse().join('')
 }
 console.log(show2('abcdefghijklmnopqrst'))
+
+// 接口
+// function showMsg(myObj: { name: string }) {
+//   console.log(myObj.name)
+// }
+// // 我们传入的对象参数实际上会包含很多属性，但是编译器只会检查那些必需的属性是否存在，并且其类型是否匹配
+// let user = { name: 'Tom', age: 18, sex: 1, value: 3 }
+// showMsg(user)
+
+interface User {
+  name: string
+}
+function showName(myObj: User) {
+  return myObj.name
+}
+let myObj = { name: 'Tom', age: 18, sex: 1, value: 100 }
+showName(myObj)
+
+// 可选属性
+interface SquareConfig {
+  color?: string
+  width?: number
+}
+function createSquare(config: SquareConfig): { color: string; area: number } {
+  let newSquare = { color: 'green', area: 100 }
+  if (config.color) {
+    newSquare.color = config.color
+  }
+  if (config.width) {
+    newSquare.area = config.width * config.width
+  }
+  return newSquare
+}
+createSquare({ color: 'green' })
+
+// 只读属性
+interface Point {
+  readonly x: number
+  readonly y: number
+}
+let p1: Point = { x: 1, y: 2 }
+console.log(p1.x)
+let arr1: number[] = [1, 2, 3]
+let arr2: Array<number> = [4, 5, 6]
+console.log(arr1)
+console.log(arr2)
+let arr3: ReadonlyArray<number> = arr1
+// arr3[1] =3
+// 可以用类型断言重写
+arr1 = arr3 as Array<number>
