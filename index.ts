@@ -44,12 +44,29 @@ import { log } from 'console'
 // console.log(greeter(user))
 
 // 接口
+// interface Person {
+//   firstName: string
+//   lastName: string
+// }
+// function greeter(person: Person): string {
+//   return `hello,${person.firstName}-${person.lastName}`
+// }
+// let user = { firstName: 'John', lastName: 'Tom' }
+// console.log(greeter(user))
+
+// 类
+class Student {
+  fullName: string
+  constructor(public firstName: string, public lastName: string) {
+    this.fullName = firstName + lastName
+  }
+}
 interface Person {
   firstName: string
   lastName: string
 }
 function greeter(person: Person): string {
-  return `hello,${person.firstName}-${person.lastName}`
+  return `hello,${person.firstName} ${person.lastName}`
 }
-let user = { firstName: 'John', lastName: 'Tom' }
+let user = new Student('张', '三')
 console.log(greeter(user))
