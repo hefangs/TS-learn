@@ -191,3 +191,194 @@ let arr3: ReadonlyArray<number> = arr1
 // arr3[1] =3
 // 可以用类型断言重写
 arr1 = arr3 as Array<number>
+
+// readonly vs const
+
+//  索引签名
+// SquareConfig 带有上面定义的类型的 color 和 width 属性，并且_还会_带有任意数量的其它属性
+interface SquareConfigs {
+  color: string
+  width: number
+  [propName: string]: any
+}
+
+// 函数类型/
+interface searchFunc {
+  (source: string, subString: string): boolean
+}
+let mySearch: searchFunc
+mySearch = (a: string, b: string) => {
+  let result = a.search(b)
+  return result > -1
+}
+
+// 可索引的类型
+interface stringArray {
+  [index: number]: string
+}
+let myArr: stringArray
+myArr = ['张三', '李四']
+let a2 = myArr[0]
+console.log(a)
+
+// 字符串和数字。 可以同时使用两种类型的索引，但是数字索引的返回值必须是字符串索引返回值类型的子类型
+interface myObj1 {
+  [key: string]: string
+}
+let newObj1: myObj1 = {
+  name: 'Tom',
+  age: '20',
+  sex: 'man'
+}
+interface myObj2 {
+  [key: number]: string
+}
+let newObj2: myObj2 = ['Tom', '20', 'man']
+
+console.log(newObj1.name)
+console.log(newObj2[0])
+
+// class Animal {
+//   name: string
+// }
+// class Dog extends Animal {
+//   breed: string
+// }
+
+// // 错误：使用数值型的字符串索引，有时会得到完全不同的Animal!
+// interface NotOkay {
+//   [x: number]: Animal
+//   [x: string]: Dog
+// }
+interface NumberDictionary {
+  [index: string]: number
+  length: number
+  //name: string //
+}
+interface NumberOrStringDictionary {
+  readonly [index: string]: number | string
+}
+let myO: NumberOrStringDictionary = { name: 'Alice', age: 20 }
+//myO.name = 'Bob' //类型“NumberOrStringDictionary”中的索引签名仅允许读取。ts(2542)
+
+// 类类型
+interface clockInterface {
+  currentTime: Date
+  setTime(d: Date): void
+}
+class Clock implements clockInterface {
+  currentTime: Date = new Date()
+  setTime(d: Date): void {
+    this.currentTime = d
+  }
+  constructor(h: number, m: number) {}
+}
+
+//类静态部分与实例部分的区别
+// interface ClockConstructor {
+//   currentTime: Date
+//   new (hour: number, minute: number)
+// }
+
+// class Clock implements ClockConstructor {
+//   currentTime = new Date()
+//   constructor(h: number, m: number) {}
+// }
+interface ClockConstructor {
+  new (h: number, m: number): ClockInterface
+}
+interface ClockInterface {
+  tick(): void
+}
+function createClock(
+  ctor: ClockConstructor,
+  h: number,
+  m: number
+): ClockInterface {
+  return new ctor(h, m)
+}
+class DigitalClock implements ClockInterface {
+  constructor(h: number, m: number) {}
+  tick(): void {
+    console.log('beep beep')
+  }
+}
+class AnalogClock implements ClockInterface {
+  constructor(h: number, m: number) {}
+  tick(): void {
+    console.log('tick tick')
+  }
+}
+let digital = createClock(DigitalClock, 12, 17)
+let analog = createClock(AnalogClock, 7, 32)
+
+// 继承接口
+interface Shape {
+  color: string
+}
+interface Square extends Shape {
+  width: number
+}
+// let square: Square = { color: 'blue', width: 100 }
+let square = {} as Square
+square.color = 'blue'
+square.width = 100
+// 一个接口可以继承多个接口，创建出多个接口的合成接口
+interface A {
+  sex: string
+}
+interface B {
+  age: number
+}
+interface Person extends A, B {
+  name: string
+}
+let p11: Person = { name: 'John', age: 18, sex: 'female' }
+let p12 = {} as Person
+p12.name = 'John1'
+p12.age = 19
+p12.sex = 'male'
+
+// 混合类型
+interface Counter {
+  (start: number): string
+  interval: number
+  reset(): void
+}
+function getCounter(): Counter {
+  let counter = function (start: number) {} as Counter
+  counter.interval = 123
+  counter.reset = function () {}
+  return counter
+}
+let x1 = getCounter()
+console.log(x1(1))
+console.log(x1.reset())
+console.log((x1.interval = 124))
+
+class Control {
+  private state: any
+}
+interface SelectableControl extends Control {
+  select(): void
+}
+class Button extends Control implements SelectableControl {
+  select() {}
+}
+class TextBox extends Control {
+  select() {}
+}
+class ImageControl implements SelectableControl {
+  // Error: Class 'ImageControl' incorrectly implements interface 'SelectableControl'.
+  //  Types have separate declarations of a private property 'state'.
+  private state: any
+  select(): void {}
+}
+// 在上面的例子里， SelectableControl 包含了 Control 的所有成员，包括私有成员 state 。
+// 因为 state 是私有成员，所以只能够是 Control 的子类们才能实现 SelectableControl 接口。
+// 因为只有 Control 的子类才能够拥有一个声明于 Control 的私有成员 state ，这对私有成员的兼容性是必需的。
+
+// 在 Control 类内部，是允许通过 SelectableControl 的实例来访问私有成员 state 的。
+// 实际上， SelectableControl 就像 Control 一样，并拥有一个 select 方法。
+//  Button 和 TextBox 类是 SelectableControl 的子类（因为它们都继承自 Control 并有 select 方法）。
+//  而对于 ImageControl 类，它有自身的私有成员 state 而不是通过继承 Control 得来的，所以它不可以实现 SelectableControl 。
