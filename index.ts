@@ -522,3 +522,149 @@ alert('card: ' + pickedCard1.card + ' of ' + pickedCard1.suit)
 
 let pickedCard2 = pickCard(15)
 alert('card: ' + pickedCard2.card + ' of ' + pickedCard2.suit)
+
+// 字面量类型
+type Easing = 'ease-in' | 'ease-out' | 'ease-in-out'
+class UIElement {
+  animate(dx: number, dy: number, easing: Easing) {
+    if (easing === 'ease-in') {
+      // ...
+    } else if (easing === 'ease-out') {
+    } else if (easing === 'ease-in-out') {
+    } else {
+      // It's possible that someone could reach this
+      // by ignoring your types though.
+    }
+  }
+}
+
+let button = new UIElement()
+button.animate(0, 0, 'ease-in')
+button.animate(0, 0, 'uneasy')
+
+function createElement(tagName: 'div'): HTMLDivElement
+function createElement(tagName: 'span'): HTMLSpanElement
+function createElement(tagName: string): HTMLElement {}
+
+// 数字字面量类型
+function rollDice(): 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 {
+  return Math.floor(Math.random() * 10) as 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+}
+
+const result = rollDice()
+
+interface MapConfig {
+  lng: number
+  lat: number
+  tileSize: 8 | 16 | 32
+}
+
+setupMap({ lng: -73.935242, lat: 40.73061, tileSize: 16 })
+
+interface Success {
+  isValid: true
+  reason: null
+}
+
+interface Fail {
+  isValid: false
+  reason: string
+}
+
+type ValidationResult = Success | Fail
+// 联合类型
+/**
+ * Takes a string and adds "padding" to the left.
+ * If 'padding' is a string, then 'padding' is appended to the left side.
+ * If 'padding' is a number, then that number of spaces is added to the left side.
+ */
+function padLeft(value: string, padding: any) {
+  if (typeof padding === 'number') {
+    return Array(padding + 1).join(' ') + value
+  }
+  if (typeof padding === 'string') {
+    return padding + value
+  }
+  throw new Error(`Expected string or number, got '${typeof padding}'.`)
+}
+
+padLeft('Hello world', 4) // returns "    Hello world"
+
+function padLeft1(value: string, padding: number | string) {}
+let indentedString = padLeft1('hello world', true)
+
+// 具有公共字段的联合
+// @errors: 2339
+
+interface Bird {
+  fly(): void
+  layEggs(): void
+}
+
+interface Fish {
+  swim(): void
+  layEggs(): void
+}
+
+declare function getSmallPet(): Fish | Bird
+
+let pet = getSmallPet()
+pet.layEggs()
+
+// 只有两种可能类型中的一种可用
+pet.swim()
+
+// 可区分联合
+type NetworkLoadingState = {
+  state: 'loading'
+}
+
+type NetworkFailedState = {
+  state: 'failed'
+  code: number
+}
+
+type NetworkSuccessState = {
+  state: 'success'
+  response: {
+    title: string
+    duration: number
+    summary: string
+  }
+}
+
+// 创建一个只代表上述类型之一的类型，但你还不确定它是哪个。
+type NetworkState =
+  | NetworkLoadingState
+  | NetworkFailedState
+  | NetworkSuccessState
+
+// 联合的穷尽性检查
+
+// 交叉类型
+interface ErrorHandling {
+  success: boolean
+  error?: { message: string }
+}
+
+interface ArtworksData {
+  artworks: { title: string }[]
+}
+
+interface ArtistsData {
+  artists: { name: string }[]
+}
+
+// 这些接口被组合后拥有一致的错误处理，和它们自己的数据
+
+type ArtworksResponse = ArtworksData & ErrorHandling
+type ArtistsResponse = ArtistsData & ErrorHandling
+
+const handleArtistsResponse = (response: ArtistsResponse) => {
+  if (response.error) {
+    console.error(response.error.message)
+    return
+  }
+
+  console.log(response.artists)
+}
