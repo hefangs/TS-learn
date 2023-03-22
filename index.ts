@@ -774,7 +774,7 @@ class Employee extends Person {
 }
 
 let howard = new Employee('Howard', 'Sales')
-console.log(howard.getElevatorPitch())
+// console.log(howard.getElevatorPitch())
 // console.log(howard.name) // 错误
 
 // readonly 修饰符
@@ -811,24 +811,24 @@ class Animal4 {
 // }
 
 const fullNameMaxLength = 10
-class Employee3 {
-  private _fullName: string
-  get fullName(): string {
-    return this._fullName
-  }
-  set fullName(newName: string) {
-    if (newName && newName.length > fullNameMaxLength) {
-      throw new Error('fullName has a max length of ' + fullNameMaxLength)
-    }
-    this._fullName = newName
-  }
-}
+// class Employee3 {
+//   // private _fullName: string
+//   get fullName(): string {
+//     return this._fullName
+//   }
+//   set fullName(newName: string) {
+//     if (newName && newName.length > fullNameMaxLength) {
+//       throw new Error('fullName has a max length of ' + fullNameMaxLength)
+//     }
+//     this._fullName = newName
+//   }
+// }
 
-let employee = new Employee3()
-employee.fullName = 'Tom Smith'
-if (employee.fullName) {
-  // console.log(employee.fullName)
-}
+// let employee = new Employee3()
+// employee.fullName = 'Tom Smith'
+// if (employee.fullName) {
+//   // console.log(employee.fullName)
+// }
 
 // 静态属性
 
@@ -872,8 +872,8 @@ class MyClass2 extends MyClass1 {
     console.log(2)
   }
 }
-console.log(MyClass2.myStaticProperty)
-MyClass2.myStaticMethod()
+// console.log(MyClass2.myStaticProperty)
+// MyClass2.myStaticMethod()
 
 // 抽象类
 
@@ -907,8 +907,8 @@ class userDepartment extends Department {
 let department: Department // 允许创建一个对抽象类型的引用
 // department = new Department()  错误: 不能创建一个抽象类的实例
 department = new userDepartment() // 允许对一个抽象子类进行实例化和赋值
-department.printName()
-department.printMeeting()
+// department.printName()
+// department.printMeeting()
 // department.generateReports()  错误: 方法在声明的抽象类中不存在
 
 // 构造函数
@@ -924,4 +924,105 @@ class Greeter1 {
 }
 let greeter1: Greeter1
 greeter1 = new Greeter1('world')
-console.log(greeter1.greet())
+// console.log(greeter1.greet())
+
+// 枚举
+
+enum Direction {
+  Up = 1,
+  Down = 3,
+  Left = 5,
+  Right
+}
+// console.log(Direction.Up, Direction.Down, Direction.Left, Direction.Right)
+
+enum Response1 {
+  No = 10,
+  Yes = 11
+}
+function response(recipient: string, message: Response1) {
+  return recipient + message
+}
+let result = response('Princess Caroline', Response1.Yes)
+// console.log(result)
+
+enum E {
+  A = 'getSomeValue'
+  // B //枚举成员必须具有初始化表达式
+}
+// 字符串枚举
+
+enum Direction1 {
+  Up = 'up',
+  Down = 'down',
+  Left = 'left',
+  Right = 'right'
+}
+// 异构枚举
+
+enum BooleanLikeHeterogeneousEnum {
+  No = 1,
+  Yes = 'YES'
+}
+
+// 计算的和常量成
+// All enum members in 'E1' and 'E2' are constant.
+
+enum E1 {
+  X,
+  Y,
+  Z
+}
+
+enum E2 {
+  A = 1,
+  B,
+  C
+}
+enum FileAccess {
+  // constant members
+  None,
+  Read = 1 << 1,
+  Write = 1 << 2,
+  ReadWrite = Read | Write,
+  // computed member
+  G = '123'.length
+}
+
+// 联合枚举与枚举成员的类型
+enum ShapeKind {
+  Circle,
+  Square
+}
+
+interface Circle {
+  kind: ShapeKind.Circle
+  radius: number
+}
+
+interface Square {
+  kind: ShapeKind.Square
+  sideLength: number
+}
+
+let c: Circle = {
+  kind: ShapeKind.Square, // Error! Type 'ShapeKind.Square' is not assignable to type 'ShapeKind.Circle'.
+  radius: 100
+}
+
+enum E {
+  Foo,
+  Bar
+}
+
+function f(x: E) {
+  if (x !== E.Foo || x !== E.Bar) {
+    //             ~~~~~~~~~~~
+    // Error! This condition will always return 'true' since the types 'E.Foo' and 'E.Bar' have no overlap.
+  }
+}
+declare enum Enum {
+  A = 1,
+  B,
+  C = 2
+}
