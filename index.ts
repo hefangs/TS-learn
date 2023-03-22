@@ -1005,10 +1005,10 @@ interface Square {
   sideLength: number
 }
 
-let c: Circle = {
-  kind: ShapeKind.Square, // Error! Type 'ShapeKind.Square' is not assignable to type 'ShapeKind.Circle'.
-  radius: 100
-}
+// let c: Circle = {
+//   //kind: ShapeKind.Square, // Error! Type 'ShapeKind.Square' is not assignable to type 'ShapeKind.Circle'.
+//   radius: 100
+// }
 
 enum E {
   Foo,
@@ -1016,13 +1016,112 @@ enum E {
 }
 
 function f(x: E) {
-  if (x !== E.Foo || x !== E.Bar) {
-    //             ~~~~~~~~~~~
-    // Error! This condition will always return 'true' since the types 'E.Foo' and 'E.Bar' have no overlap.
-  }
+  // if (x !== E.Foo || x !== E.Bar) {
+  //   //             ~~~~~~~~~~~
+  //   // Error! This condition will always return 'true' since the types 'E.Foo' and 'E.Bar' have no overlap.
+  // }
 }
 declare enum Enum {
   A = 1,
   B,
   C = 2
 }
+
+// 泛型
+
+function loggingIdentity1<T>(arg: T): T {
+  //console.log(arg.length) // Error: T doesn't have .length
+  return arg
+}
+function loggingIdentity2<T>(arg: T[]): T[] {
+  console.log(arg.length) // Array has a .length, so no more error
+  return arg
+}
+function loggingIdentity3<T>(arg: Array<T>): Array<T> {
+  console.log(arg.length) // Array has a .length, so no more error
+  return arg
+}
+
+function identity1<T>(arg: T): T {
+  return arg
+}
+
+let myIdentity1: <T>(arg: T) => T = identity1
+
+function identity2<T>(arg: T): T {
+  return arg
+}
+
+let myIdentity2: <U>(arg: U) => U = identity2
+
+function identity<T>(arg: T): T {
+  return arg
+}
+
+let myIdentity: { <T>(arg: T): T } = identity
+
+interface GenericIdentityFn {
+  <T>(arg: T): T
+}
+function identity3<T>(arg: T): T {
+  return arg
+}
+let myIdentity3: GenericIdentityFn = identity3
+
+// // 泛型类
+// class GenericNumber<T> {
+//   zeroValue: T
+//   add: (x: T, y: T) => T
+// }
+
+// let myGenericNumber = new GenericNumber<number>()
+// myGenericNumber.zeroValue = 0
+// myGenericNumber.add = function (x, y) {
+//   return x + y
+// }
+
+// 反省约束
+interface lengthWise {
+  length: number
+}
+function loggingIdentity11<T extends lengthWise>(arg: T): T {
+  console.log(arg.length)
+  return arg
+}
+// 在泛型约束中使用类型参数
+function getProperty<T, K extends keyof T>(obj: T, key: K) {
+  return obj[key]
+}
+let x = { a: 1, b: 2, c: 3, d: 4 }
+getProperty(x, 'a')
+// getProperty(x, 'e')
+
+function create<T>(c: { new (): T }): T {
+  return new c()
+}
+class BeeKeeper {
+  hasMask: boolean
+}
+
+class ZooKeeper {
+  nametag: string
+}
+
+class Animal33 {
+  numLegs: number
+}
+
+class Bee extends Animal33 {
+  keeper: BeeKeeper
+}
+
+class Lion extends Animal33 {
+  keeper: ZooKeeper
+}
+
+function createInstance<A extends Animal>(c: new () => A): A {
+  return new c()
+}
+
+createInstance(Lion).keeper.nametag // typechecks!
+createInstance(Bee).keeper.hasMask // typechecks!
