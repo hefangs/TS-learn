@@ -1125,3 +1125,244 @@ function createInstance<A extends Animal>(c: new () => A): A {
 
 createInstance(Lion).keeper.nametag // typechecks!
 createInstance(Bee).keeper.hasMask // typechecks!
+
+// 高级类型
+// 交叉类型 交叉类型是将多个类型合并为一个类型
+function extend<First, Second>(first: First, second: Second): First & Second {
+  const result: Partial<First & Second> = {}
+  for (const prop in first) {
+    if (first.hasOwnProperty(prop)) {
+      ;(result as First)[prop] = first[prop]
+    }
+  }
+  for (const prop in second) {
+    if (second.hasOwnProperty(prop)) {
+      ;(result as Second)[prop] = second[prop]
+    }
+  }
+  return result as First & Second
+}
+
+class Person {
+  constructor(public name: string) {}
+}
+
+interface Loggable {
+  log(name: string): void
+}
+
+class ConsoleLogger implements Loggable {
+  log(name) {
+    console.log(`Hello, I'm ${name}.`)
+  }
+}
+
+const jim = extend(new Person('Jim'), ConsoleLogger.prototype)
+jim.log(jim.name)
+
+// 联合类型
+// 表示一个值可以是几种类型之一。 我们用竖线（ | ）分隔每个类型
+function padLeft(value: string, padding: string | number) {
+  // ...
+}
+let indentedString = padLeft('Hello world', 2) // errors during compilation
+
+// 如果一个值是联合类型，我们只能访问此联合类型的所有类型里共有的成员。
+interface Bird {
+  fly()
+  layEggs()
+}
+
+interface Fish {
+  swim()
+  layEggs()
+}
+
+function getSmallPet(): Fish | Bird {
+  // ...
+}
+let pet = getSmallPet()
+pet.layEggs() // okay
+pet.swim() // errors
+
+// 类型守卫与类型区分
+// 用户自定义的类型守卫
+function isFish(pet: Fish | Bird): pet is Fish {
+  return (pet as Fish).swim !== undefined
+}
+
+function padLeft1(value: string, padding: string | number) {
+  if (typeof padding === 'number') {
+    return Array(padding + 1).join(' ') + value
+  }
+  if (typeof padding === 'string') {
+    return padding + value
+  }
+  throw new Error(`Expected string or number, got '${padding}'.`)
+}
+
+// 类型别名
+type Name = string
+type NameResolver = () => string
+type NameOrResolver = Name | NameResolver
+function getName(n: NameOrResolver): Name {
+  if (typeof n === 'string') {
+    return n
+  } else {
+    return n()
+  }
+}
+
+type Alias = { num: number }
+interface Interface {
+  num: number
+}
+declare function aliased(arg: Alias): Alias
+declare function interfaced(arg: Interface): Interface
+
+// 字符串字面量类型
+type Easing = 'ease-in' | 'ease-out' | 'ease-in-out'
+class UIElement {
+  animate(dx: number, dy: number, easing: Easing) {
+    if (easing === 'ease-in') {
+      // ...
+    } else if (easing === 'ease-out') {
+    } else if (easing === 'ease-in-out') {
+    } else {
+      // error! should not pass null or undefined.
+    }
+  }
+}
+
+let button = new UIElement()
+button.animate(0, 0, 'ease-in')
+button.animate(0, 0, 'uneasy') // error: "uneasy" is not allowed here
+
+// 字符串字面量类型还可以用于区分函数重载
+function createElement(tagName: 'input'): HTMLInputElement
+function createElement(tagName: 'img'): HTMLImageElement
+function createElement(tagName: string): Element {}
+
+// 数字字面量类型
+function rollDice(): 1 | 2 | 3 | 4 | 5 | 6 {
+  // ...
+}
+function foo(x: number) {
+  if (x !== 1 || x !== 2) {
+    //         ~~~~~~~
+    // Operator '!==' cannot be applied to types '1' and '2'.
+  }
+}
+
+// 可辨识联合
+interface Square {
+  kind: 'square'
+  size: number
+}
+interface Rectangle {
+  kind: 'rectangle'
+  width: number
+  height: number
+}
+interface Circle {
+  kind: 'circle'
+  radius: number
+}
+type Shape = Square | Rectangle | Circle
+
+function area(s: Shape) {
+  switch (s.kind) {
+    case 'square':
+      return s.size * s.size
+    case 'rectangle':
+      return s.height * s.width
+    case 'circle':
+      return Math.PI * s.radius ** 2
+  }
+}
+
+//完整性检查
+
+// 多态的 this 类型
+class BasicCalculator {
+  public constructor(protected value: number = 0) {}
+  public currentValue(): number {
+    return this.value
+  }
+  public add(operand: number): this {
+    this.value += operand
+    return this
+  }
+  public multiply(operand: number): this {
+    this.value *= operand
+    return this
+  }
+  // ... other operations go here ...
+}
+
+let v = new BasicCalculator(2).multiply(5).add(1).currentValue()
+
+// 索引类型
+function pluck(o, propertyNames) {
+  return propertyNames.map(n => o[n])
+}
+function pluck1<T, K extends keyof T>(o: T, propertyNames: K[]): T[K][] {
+  return propertyNames.map(n => o[n])
+}
+
+interface Car {
+  manufacturer: string
+  model: string
+  year: number
+}
+let taxi: Car = {
+  manufacturer: 'Toyota',
+  model: 'Camry',
+  year: 2014
+}
+
+// Manufacturer and model are both of type string,
+// so we can pluck them both into a typed string array
+let makeAndModel: string[] = pluck1(taxi, ['manufacturer', 'model'])
+
+// If we try to pluck model and year, we get an
+// array of a union type: (string | number)[]
+let modelYear = pluck1(taxi, ['model', 'year'])
+
+declare function f3<T extends boolean>(x: T): T extends true ? string : number
+
+// Type is 'string | number
+let x3 = f3(Math.random() < 0.5)
+
+type TypeName<T> = T extends string
+  ? 'string'
+  : T extends number
+  ? 'number'
+  : T extends boolean
+  ? 'boolean'
+  : T extends undefined
+  ? 'undefined'
+  : T extends Function
+  ? 'function'
+  : 'object'
+
+type T0 = TypeName<string> // "string"
+type T1 = TypeName<'a'> // "string"
+type T2 = TypeName<true> // "boolean"
+type T3 = TypeName<() => void> // "function"
+type T4 = TypeName<string[]> // "object"
+
+interface Foo {
+  propA: boolean
+  propB: boolean
+}
+
+declare function f<T>(x: T): T extends Foo ? string : number
+
+function foo3<U>(x: U) {
+  // Has type 'U extends Foo ? string : number'
+  let a = f(x)
+
+  // This assignment is allowed though!
+  let b: string | number = a
+}
