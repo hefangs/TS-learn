@@ -1382,20 +1382,33 @@
 // instance.sex = 'male'
 // const instance2 = new B()
 // instance2.sex = 'male'
-class A {
-  _sex: string
-  constructor(sex: string) {
-    this._sex = sex
-  }
+// class A {
+//   _sex: string
+//   constructor(sex: string) {
+//     this._sex = sex
+//   }
 
-  public get sex(): string {
-    return this.sex
-  }
-  public set sex(sex: string) {
-    this._sex = sex
+//   public get sex(): string {
+//     return this.sex
+//   }
+//   public set sex(sex: string) {
+//     this._sex = sex
+//   }
+// }
+// let a = new A('Aa')
+// console.log(a._sex)
+// a._sex = 'Bb'
+// console.log(a._sex)
+interface User {
+  name: string
+  age: number
+  info(): void
+}
+let a: User = {
+  name: 'Jane',
+  age: 10,
+  info() {
+    return `${this.name}今年${this.age}岁嘞`
   }
 }
-let a = new A('Aa')
-console.log(a._sex)
-a._sex = 'Bb'
-console.log(a._sex)
+console.log(a.info())
