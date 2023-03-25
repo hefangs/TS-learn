@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <button onclick="pay('AliPay',100)">支付宝支付</button>
+    <button onclick="pay('WePay',100)">微信支付</button>
+    <script src="index.js"></script>
+    <script>
+      function onload() {
+        function pay(type, price) {
+          switch (type) {
+            case 'AliPay':
+              pay = new AliPay()
+              break
+            case 'WePay':
+              pay = new WePay()
+          }
+          pay.handle(price)
+        }
+      }
+    </script>
+  </body>
+</html>

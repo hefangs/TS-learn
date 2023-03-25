@@ -1437,20 +1437,34 @@ import { userInfo } from 'os'
 //   end() {
 //     return console.log('end')
 //   }
-// }
+// // }
 
-interface UserInfo {
-  name: string
-  age: number
-  sex: TypeSex
+// interface UserInfo {
+//   name: string
+//   age: number
+//   sex: TypeSex
+// }
+// enum TypeSex {
+//   male = 'male',
+//   female = 'female'
+// }
+// let p1: UserInfo = { name: 'John1', age: 18, sex: TypeSex.male }
+// let p2: UserInfo = { name: 'John2', age: 19, sex: TypeSex.female }
+// let p: UserInfo[] = [p1, p2]
+// console.log(p1)
+// console.log(p2)
+// console.log(p)
+
+interface PayInterface {
+  handle(price: number): void
 }
-enum TypeSex {
-  male = 'male',
-  female = 'female'
+class AliPay implements PayInterface {
+  handle(price: number): void {
+    console.log(`支付宝付款${price}`)
+  }
 }
-let p1: UserInfo = { name: 'John1', age: 18, sex: TypeSex.male }
-let p2: UserInfo = { name: 'John2', age: 19, sex: TypeSex.female }
-let p: UserInfo[] = [p1, p2]
-console.log(p1)
-console.log(p2)
-console.log(p)
+class WePay implements PayInterface {
+  handle(price: number): void {
+    console.log(`微信付款${price}`)
+  }
+}
