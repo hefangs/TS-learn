@@ -10,6 +10,8 @@
 // // // // //   return
 // // // // // }
 
+import { userInfo } from 'os'
+
 // // // // // console.log(str)
 // // // // // console.log(num1, num2, num3)
 // // // // // console.log(n, u)
@@ -1413,26 +1415,42 @@
 // }
 // console.log(a.info())
 
-interface Start {
-  start(): void
+// interface Start {
+//   start(): void
+// }
+// interface End {
+//   end(): void
+// }
+// class A {
+//   info: string
+//   constructor(info: string) {
+//     this.info = info
+//   }
+//   show() {
+//     return this.info
+//   }
+// }
+// class B extends A implements Start, End {
+//   start(): void {
+//     return console.log('start')
+//   }
+//   end() {
+//     return console.log('end')
+//   }
+// }
+
+interface UserInfo {
+  name: string
+  age: number
+  sex: TypeSex
 }
-interface End {
-  end(): void
+enum TypeSex {
+  male = 'male',
+  female = 'female'
 }
-class A {
-  info: string
-  constructor(info: string) {
-    this.info = info
-  }
-  show() {
-    return this.info
-  }
-}
-class B extends A implements Start, End {
-  start(): void {
-    return console.log('start')
-  }
-  end() {
-    return console.log('end')
-  }
-}
+let p1: UserInfo = { name: 'John1', age: 18, sex: TypeSex.male }
+let p2: UserInfo = { name: 'John2', age: 19, sex: TypeSex.female }
+let p: UserInfo[] = [p1, p2]
+console.log(p1)
+console.log(p2)
+console.log(p)
