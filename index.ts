@@ -1399,16 +1399,40 @@
 // console.log(a._sex)
 // a._sex = 'Bb'
 // console.log(a._sex)
-interface User {
-  name: string
-  age: number
-  info(): void
+// interface User {
+//   name: string
+//   age: number
+//   info(): void
+// }
+// let a: User = {
+//   name: 'Jane',
+//   age: 10,
+//   info() {
+//     return `${this.name}今年${this.age}岁嘞`
+//   }
+// }
+// console.log(a.info())
+
+interface Start {
+  start(): void
 }
-let a: User = {
-  name: 'Jane',
-  age: 10,
-  info() {
-    return `${this.name}今年${this.age}岁嘞`
+interface End {
+  end(): void
+}
+class A {
+  info: string
+  constructor(info: string) {
+    this.info = info
+  }
+  show() {
+    return this.info
   }
 }
-console.log(a.info())
+class B extends A implements Start, End {
+  start(): void {
+    return console.log('start')
+  }
+  end() {
+    return console.log('end')
+  }
+}
