@@ -1535,20 +1535,37 @@ import { userInfo } from 'os'
 // let s3 = new Student('Tommy', 10, 'female')
 // console.log(s3)
 
+// function moveDecorator(target: Function) {
+//   target.prototype.name = 'Tony'
+//   target.prototype.age = 18
+//   target.prototype.showInfo = (): void => {
+//     console.log(`moveDecorator~~~~~~~`)
+//   }
+// }
+
+// @moveDecorator
+// class Tank {}
+// @moveDecorator
+// class Player {}
+// let t = new Tank()
+// let p = new Player()
+// console.log((t as any).name)
+// console.log((p as any).age)
+// console.log((p as any).showInfo())
+
 function moveDecorator(target: Function) {
-  target.prototype.name = 'Tony'
-  target.prototype.age = 18
-  target.prototype.showInfo = (): void => {
-    console.log(`moveDecorator~~~~~~~`)
+  target.prototype.move = () => {
+    console.log('move')
   }
 }
-
+function eatDecorator(target: Function) {
+  target.prototype.eat = () => {
+    console.log('eat')
+  }
+}
+@eatDecorator
 @moveDecorator
-class Tank {}
-@moveDecorator
-class Player {}
-let t = new Tank()
-let p = new Player()
-console.log((t as any).name)
-console.log((p as any).age)
-console.log((p as any).showInfo())
+class Person {}
+let p = new Person()
+console.log((<any>p).eat())
+console.log((<any>p).move())
