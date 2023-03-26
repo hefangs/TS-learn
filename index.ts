@@ -1510,27 +1510,45 @@ import { userInfo } from 'os'
 // }
 // console.log(s2)
 
-type User = {
-  name: string
-}
-type Member = {
-  age: number
-}
+// type User = {
+//   name: string
+// }
+// type Member = {
+//   age: number
+// }
 
 // type Person = User & Member
-interface Person extends User, Member {
-  sex: string
-}
+// // interface Person extends User, Member {
+// //   sex: string
+// // }
 
-class Student implements Person {
-  name: string
-  age: number
-  sex: string
-  constructor(name: string, age: number, sex: string) {
-    this.name = name
-    this.age = age
-    this.sex = sex
+// class Student implements Person {
+//   name: string
+//   age: number
+//   sex: string
+//   constructor(name: string, age: number, sex: string) {
+//     this.name = name
+//     this.age = age
+//     this.sex = sex
+//   }
+// }
+// let s3 = new Student('Tommy', 10, 'female')
+// console.log(s3)
+
+function moveDecorator(target: Function) {
+  target.prototype.name = 'Tony'
+  target.prototype.age = 18
+  target.prototype.showInfo = (): void => {
+    console.log(`moveDecorator~~~~~~~`)
   }
 }
-let s3 = new Student('Tommy', 10, 'female')
-console.log(s3)
+
+@moveDecorator
+class Tank {}
+@moveDecorator
+class Player {}
+let t = new Tank()
+let p = new Player()
+console.log((t as any).name)
+console.log((p as any).age)
+console.log((p as any).showInfo())
