@@ -1481,3 +1481,31 @@ import { userInfo } from 'os'
 // }
 // let p1 = new Person()
 // console.log(p1)
+
+type Person = {
+  name: string
+  age: number
+}
+class Student implements Student {
+  name: string
+  age: number
+  constructor(name: string, age: number) {
+    this.name = name
+    this.age = age
+  }
+}
+let s1 = new Student('Tommy', 10)
+console.log(s1)
+
+type Name = {
+  name: string
+}
+type Age = {
+  age: number
+}
+type User = Name & Age
+let s2: User = {
+  name: 'Jane',
+  age: 13
+}
+console.log(s2)
