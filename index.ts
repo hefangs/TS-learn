@@ -1455,16 +1455,29 @@ import { userInfo } from 'os'
 // console.log(p2)
 // console.log(p)
 
-interface PayInterface {
-  handle(price: number): void
-}
-class AliPay implements PayInterface {
-  handle(price: number): void {
-    console.log(`支付宝付款${price}`)
-  }
-}
-class WePay implements PayInterface {
-  handle(price: number): void {
-    console.log(`微信付款${price}`)
-  }
-}
+// interface PayInterface {
+//   handle(price: number): void
+// }
+// class AliPay implements PayInterface {
+//   handle(price: number): void {
+//     console.log(`支付宝付款${price}`)
+//   }
+// }
+// class WePay implements PayInterface {
+//   handle(price: number): void {
+//     console.log(`微信付款${price}`)
+// //   }
+// // }
+
+// interface Member {
+//   name: string
+// }
+// interface User extends Member {
+//   age: number
+// }
+// class Person implements User {
+//   name: string = 'John'
+//   age: number = 11
+// }
+// let p1 = new Person()
+// console.log(p1)
