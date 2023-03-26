@@ -1482,30 +1482,55 @@ import { userInfo } from 'os'
 // let p1 = new Person()
 // console.log(p1)
 
-type Person = {
+// type Person = {
+//   name: string
+//   age: number
+// }
+// class Student implements Student {
+//   name: string
+//   age: number
+//   constructor(name: string, age: number) {
+//     this.name = name
+//     this.age = age
+//   }
+// }
+// let s1 = new Student('Tommy', 10)
+// console.log(s1)
+
+// type Name = {
+//   name: string
+// }
+// type Age = {
+//   age: number
+// }
+// type User = Name & Age
+// let s2: User = {
+//   name: 'Jane',
+//   age: 13
+// }
+// console.log(s2)
+
+type User = {
   name: string
+}
+type Member = {
   age: number
 }
-class Student implements Student {
+
+// type Person = User & Member
+interface Person extends User, Member {
+  sex: string
+}
+
+class Student implements Person {
   name: string
   age: number
-  constructor(name: string, age: number) {
+  sex: string
+  constructor(name: string, age: number, sex: string) {
     this.name = name
     this.age = age
+    this.sex = sex
   }
 }
-let s1 = new Student('Tommy', 10)
-console.log(s1)
-
-type Name = {
-  name: string
-}
-type Age = {
-  age: number
-}
-type User = Name & Age
-let s2: User = {
-  name: 'Jane',
-  age: 13
-}
-console.log(s2)
+let s3 = new Student('Tommy', 10, 'female')
+console.log(s3)
