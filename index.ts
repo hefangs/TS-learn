@@ -1553,19 +1553,41 @@ import { userInfo } from 'os'
 // console.log((p as any).age)
 // console.log((p as any).showInfo())
 
-function moveDecorator(target: Function) {
-  target.prototype.move = () => {
-    console.log('move')
+// function moveDecorator(target: Function) {
+//   target.prototype.move = () => {
+//     console.log('move')
+//   }
+// }
+// function eatDecorator(target: Function) {
+//   target.prototype.eat = () => {
+//     console.log('eat')
+//   }
+// }
+// @eatDecorator
+// @moveDecorator
+// class Person {}
+// let p = new Person()
+// console.log((<any>p).eat())
+// console.log((<any>p).move())
+
+function MessageDecorator<ClassDecorator>(target: Function) {
+  target.prototype.message = (context: string) => {
+    console.log(context)
   }
 }
-function eatDecorator(target: Function) {
-  target.prototype.eat = () => {
-    console.log('eat')
+@MessageDecorator
+class Login {
+  login() {
+    this.message('login successfully')
   }
 }
-@eatDecorator
-@moveDecorator
-class Person {}
-let p = new Person()
-console.log((<any>p).eat())
-console.log((<any>p).move())
+@MessageDecorator
+class Comment {
+  comment() {
+    this.message('comment successfully')
+  }
+}
+let l = new Login()
+let c = new Comment()
+l.login()
+c.comment()
