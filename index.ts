@@ -1661,25 +1661,52 @@ import { userInfo } from 'os'
 //     console.log('hello')
 //   }
 // }
-// new User().show()
-const ErrorDecorator: MethodDecorator = (
-  target: Object,
-  propertyKey: string | symbol,
-  descriptor: PropertyDescriptor
-) => {
+// // new User().show()
+// const ErrorDecorator: MethodDecorator = (
+//   target: Object,
+//   propertyKey: string | symbol,
+//   descriptor: PropertyDescriptor
+// ) => {
+//   const method = descriptor.value
+//   descriptor.value = () => {
+//     try {
+//       method()
+//     } catch (error: any) {
+//       console.log('ERROR')
+//     }
+//   }
+// }
+// class Error1 {
+//   @ErrorDecorator
+//   showError() {
+//     throw new Error('error!!!')
+//   }
+// }
+// new Error1().showError()
+const type = {
+  name: 'AA',
+  isLogin: false
+}
+const AccessDecorator: MethodDecorator = (...args: any[]) => {
+  const [, , descriptor] = args
   const method = descriptor.value
   descriptor.value = () => {
-    try {
+    if (type.isLogin) {
       method()
-    } catch (error: any) {
-      console.log('ERROR')
+    } else {
+      console.log('请登录')
     }
   }
 }
-class Error1 {
-  @ErrorDecorator
-  showError() {
-    throw new Error('error!!!')
+class User {
+  @AccessDecorator
+  show1() {
+    console.log('查看文章')
+  }
+  @AccessDecorator
+  show2() {
+    console.log('保存文章')
   }
 }
-new Error1().showError()
+new User().show1()
+new User().show2()
