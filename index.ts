@@ -1733,27 +1733,48 @@ import { userInfo } from 'os'
 //   }
 // }
 
-const PropDecorator: PropertyDecorator = (
+// const PropDecorator: PropertyDecorator = (
+//   target: Object,
+//   propertyKey: string | symbol
+// ) => {
+//   console.log(propertyKey)
+// }
+// const PramsDecorator: ParameterDecorator = (
+//   target: Object,
+//   propertyKey: string | symbol,
+//   parameterIndex: number
+// ) => {
+//   console.log(target, propertyKey, parameterIndex)
+// }
+// class Person {
+//   @PropDecorator
+//   name: string | undefined
+
+//   showInfo(
+//     id: number,
+//     isLogin: boolean,
+//     @PramsDecorator
+//     content: string
+//   ): void {}
+// }
+const LowerDecorator: PropertyDecorator = (
   target: Object,
   propertyKey: string | symbol
 ) => {
-  console.log(propertyKey)
-}
-const PramsDecorator: ParameterDecorator = (
-  target: Object,
-  propertyKey: string | symbol,
-  parameterIndex: number
-) => {
-  console.log(target, propertyKey, parameterIndex)
+  let value: string
+  Object.defineProperty(target, propertyKey, {
+    get: () => {
+      return value.toLowerCase()
+    },
+    set: (newValue: string) => {
+      value = newValue
+    }
+  })
 }
 class Person {
-  @PropDecorator
+  @LowerDecorator
   name: string | undefined
-
-  showInfo(
-    id: number,
-    isLogin: boolean,
-    @PramsDecorator
-    content: string
-  ): void {}
 }
+let p = new Person()
+p.name = 'Tom'
+console.log(p.name)
