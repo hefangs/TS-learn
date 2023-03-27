@@ -1594,29 +1594,71 @@ import { userInfo } from 'os'
 // l.login()
 // c.comment()
 
-const MusicDecoratorFactory = (type: string): ClassDecorator => {
-  switch (type) {
-    case 'hello A':
-      return (target: Function) => {
-        target.prototype.play = (): void => {
-          console.log(type)
-        }
-      }
-    default:
-      return (target: Function) => {
-        target.prototype.play = (): void => {
-          console.log(type)
-        }
-      }
+// const MusicDecoratorFactory = (type: string): ClassDecorator => {
+//   switch (type) {
+//     case 'hello A':
+//       return (target: Function) => {
+//         target.prototype.play = (): void => {
+//           console.log(type)
+//         }
+//       }
+//     default:
+//       return (target: Function) => {
+//         target.prototype.play = (): void => {
+//           console.log(type)
+//         }
+//       }
+//   }
+// }
+// @MusicDecoratorFactory('hello A')
+// class Net {
+//   play() {}
+// }
+// new Net().play()
+// @MusicDecoratorFactory('hello B')
+// class Net1 {
+//   play() {}
+// }
+// new Net1().play()
+
+// const showDecorator: MethodDecorator = (...args: any[]) => {
+//   console.log(args)
+// }
+// class User {
+//   @showDecorator
+//   show() {}
+// }
+
+// const highLightDecorator: MethodDecorator = (
+//   target: Object,
+//   propertyKey: string | symbol,
+//   descriptor: PropertyDescriptor
+// ) => {
+//   target.
+// }
+// @highLightDecorator()
+// class User {
+//   public show() {
+//     console.log('show!')
+//   }
+// }
+// new User().show()
+const SleepDecorator =
+  (timer: number): MethodDecorator =>
+  (...args: any[]) => {
+    const [, , descriptor] = args
+    const method = descriptor.value
+    descriptor.value = () => {
+      setTimeout(() => {
+        method()
+      }, timer)
+    }
+  }
+
+class User {
+  @SleepDecorator(2000)
+  show() {
+    console.log('hello')
   }
 }
-@MusicDecoratorFactory('hello A')
-class Net {
-  play() {}
-}
-new Net().play()
-@MusicDecoratorFactory('hello B')
-class Net1 {
-  play() {}
-}
-new Net1().play()
+new User().show()
