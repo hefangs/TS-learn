@@ -1570,24 +1570,53 @@ import { userInfo } from 'os'
 // console.log((<any>p).eat())
 // console.log((<any>p).move())
 
-function MessageDecorator<ClassDecorator>(target: Function) {
-  target.prototype.message = (context: string) => {
-    console.log(context)
+// function MessageDecorator<ClassDecorator>(target: Function) {
+//   target.prototype.message = (context: string) => {
+//     console.log(context)
+//   }
+// }
+// @MessageDecorator
+// class Login {
+//   message(context: string) {}
+//   login() {
+//     this.message('login successfully')
+//   }
+// }
+// @MessageDecorator
+// class Comment {
+//   message(context: string) {}
+//   comment() {
+//     this.message('comment successfully')
+//   }
+// }
+// let l = new Login()
+// let c = new Comment()
+// l.login()
+// c.comment()
+
+const MusicDecoratorFactory = (type: string): ClassDecorator => {
+  switch (type) {
+    case 'hello A':
+      return (target: Function) => {
+        target.prototype.play = (): void => {
+          console.log(type)
+        }
+      }
+    default:
+      return (target: Function) => {
+        target.prototype.play = (): void => {
+          console.log(type)
+        }
+      }
   }
 }
-@MessageDecorator
-class Login {
-  login() {
-    this.message('login successfully')
-  }
+@MusicDecoratorFactory('hello A')
+class Net {
+  play() {}
 }
-@MessageDecorator
-class Comment {
-  comment() {
-    this.message('comment successfully')
-  }
+new Net().play()
+@MusicDecoratorFactory('hello B')
+class Net1 {
+  play() {}
 }
-let l = new Login()
-let c = new Comment()
-l.login()
-c.comment()
+new Net1().play()
