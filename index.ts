@@ -1683,30 +1683,52 @@ import { userInfo } from 'os'
 //   }
 // }
 // new Error1().showError()
-const type = {
-  name: 'AA',
-  isLogin: false
-}
-const AccessDecorator: MethodDecorator = (...args: any[]) => {
-  const [, , descriptor] = args
-  const method = descriptor.value
-  descriptor.value = () => {
-    if (type.isLogin) {
-      method()
-    } else {
-      console.log('请登录')
-    }
+// const type = {
+//   name: 'AA',
+//   isLogin: false
+// }
+// const AccessDecorator: MethodDecorator = (...args: any[]) => {
+//   const [, , descriptor] = args
+//   const method = descriptor.value
+//   descriptor.value = () => {
+//     if (type.isLogin) {
+//       method()
+//     } else {
+//       console.log('请登录')
+//     }
+//   }
+// }
+// class User {
+//   @AccessDecorator
+//   show1() {
+//     console.log('查看文章')
+//   }
+//   @AccessDecorator
+//   show2() {
+//     console.log('保存文章')
+//   }
+// }
+// new User().show1()
+// new User().show2()
+const RequestDecorator = (url: string): MethodDecorator => {
+  return (...args: any[]) => {
+    const [, , descriptor] = args
+    const method = descriptor.value
+    new Promise<any[]>(resolve => {
+      setTimeout(() => {
+        resolve([
+          { name: 'Tony', age: 18 },
+          { name: 'John', age: 19 }
+        ])
+      }, 2000)
+    }).then(data => {
+      method(data)
+    })
   }
 }
-class User {
-  @AccessDecorator
-  show1() {
-    console.log('查看文章')
-  }
-  @AccessDecorator
-  show2() {
-    console.log('保存文章')
+class Person {
+  @RequestDecorator('www.example.com')
+  login(user: any[]) {
+    console.log(user)
   }
 }
-new User().show1()
-new User().show2()
