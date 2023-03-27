@@ -1709,26 +1709,51 @@ import { userInfo } from 'os'
 //   }
 // }
 // new User().show1()
-// new User().show2()
-const RequestDecorator = (url: string): MethodDecorator => {
-  return (...args: any[]) => {
-    const [, , descriptor] = args
-    const method = descriptor.value
-    new Promise<any[]>(resolve => {
-      setTimeout(() => {
-        resolve([
-          { name: 'Tony', age: 18 },
-          { name: 'John', age: 19 }
-        ])
-      }, 2000)
-    }).then(data => {
-      method(data)
-    })
-  }
+// // new User().show2()
+// const RequestDecorator = (url: string): MethodDecorator => {
+//   return (...args: any[]) => {
+//     const [, , descriptor] = args
+//     const method = descriptor.value
+//     new Promise<any[]>(resolve => {
+//       setTimeout(() => {
+//         resolve([
+//           { name: 'Tony', age: 18 },
+//           { name: 'John', age: 19 }
+//         ])
+//       }, 2000)
+//     }).then(data => {
+//       method(data)
+//     })
+//   }
+// }
+// class Person {
+//   @RequestDecorator('www.example.com')
+//   login(user: any[]) {
+//     console.log(user)
+//   }
+// }
+
+const PropDecorator: PropertyDecorator = (
+  target: Object,
+  propertyKey: string | symbol
+) => {
+  console.log(propertyKey)
+}
+const PramsDecorator: ParameterDecorator = (
+  target: Object,
+  propertyKey: string | symbol,
+  parameterIndex: number
+) => {
+  console.log(target, propertyKey, parameterIndex)
 }
 class Person {
-  @RequestDecorator('www.example.com')
-  login(user: any[]) {
-    console.log(user)
-  }
+  @PropDecorator
+  name: string | undefined
+
+  showInfo(
+    id: number,
+    isLogin: boolean,
+    @PramsDecorator
+    content: string
+  ): void {}
 }
