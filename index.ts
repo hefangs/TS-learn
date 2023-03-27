@@ -1757,24 +1757,41 @@ import { userInfo } from 'os'
 //     content: string
 //   ): void {}
 // }
-const LowerDecorator: PropertyDecorator = (
+// const LowerDecorator: PropertyDecorator = (
+//   target: Object,
+//   propertyKey: string | symbol
+// ) => {
+//   let value: string
+//   Object.defineProperty(target, propertyKey, {
+//     get() {
+//       return value.toLowerCase()
+//     },
+//     set(newValue: string) {
+//       value = newValue
+//     }
+//   })
+// }
+// class Person {
+//   @LowerDecorator
+//   name: string | undefined
+// }
+// let p = new Person()
+// p.name = 'Tom'
+// console.log(p.name)
+
+const RandomColorDecorator: PropertyDecorator = (
   target: Object,
   propertyKey: string | symbol
 ) => {
-  let value: string
+  const colors: string[] = ['red', 'green', 'blue']
   Object.defineProperty(target, propertyKey, {
-    get: () => {
-      return value.toLowerCase()
-    },
-    set: (newValue: string) => {
-      value = newValue
+    get() {
+      return colors[Math.floor(Math.random() * colors.length)]
     }
   })
 }
-class Person {
-  @LowerDecorator
-  name: string | undefined
+class User {
+  @RandomColorDecorator
+  color: string | undefined
 }
-let p = new Person()
-p.name = 'Tom'
-console.log(p.name)
+console.log(new User().color)
