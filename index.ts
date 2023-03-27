@@ -1636,29 +1636,50 @@ import { userInfo } from 'os'
 // ) => {
 //   target.
 // }
-// @highLightDecorator()
 // class User {
+// @highLightDecorator()
 //   public show() {
 //     console.log('show!')
 //   }
 // }
 // new User().show()
-const SleepDecorator =
-  (timer: number): MethodDecorator =>
-  (...args: any[]) => {
-    const [, , descriptor] = args
-    const method = descriptor.value
-    descriptor.value = () => {
-      setTimeout(() => {
-        method()
-      }, timer)
+// const SleepDecorator =
+//   (timer: number): MethodDecorator =>
+//   (...args: any[]) => {
+//     const [, , descriptor] = args
+//     const method = descriptor.value
+//     descriptor.value = () => {
+//       setTimeout(() => {
+//         method()
+//       }, timer)
+//     }
+//   }
+
+// class User {
+//   @SleepDecorator(2000)
+//   show() {
+//     console.log('hello')
+//   }
+// }
+// new User().show()
+const ErrorDecorator: MethodDecorator = (
+  target: Object,
+  propertyKey: string | symbol,
+  descriptor: PropertyDescriptor
+) => {
+  const method = descriptor.value
+  descriptor.value = () => {
+    try {
+      method()
+    } catch (error: any) {
+      console.log('ERROR')
     }
   }
-
-class User {
-  @SleepDecorator(2000)
-  show() {
-    console.log('hello')
+}
+class Error1 {
+  @ErrorDecorator
+  showError() {
+    throw new Error('error!!!')
   }
 }
-new User().show()
+new Error1().showError()
