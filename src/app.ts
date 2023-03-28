@@ -1842,10 +1842,22 @@ import { type } from 'os'
 //   skill: string
 // }
 // type PickPerson = Pick<Person, 'name' | 'age'>
-interface Person {
-  name: string
+// interface Person {
+//   name: string
+//   age: number
+//   sex: string
+// }
+// let User: Partial<Person> = { sex: 'female' }
+// console.log(User)
+
+interface CatInfo {
   age: number
-  sex: string
+  skill: string
 }
-let User: Partial<Person> = { sex: 'female' }
-console.log(User)
+type CatName = 'A' | 'B' | 'C'
+const cat: Record<CatName, CatInfo> = {
+  A: { age: 1, skill: 'eat' },
+  B: { age: 2, skill: 'run' },
+  C: { age: 3, skill: 'sleep' }
+}
+console.log(cat)
