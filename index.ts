@@ -1796,11 +1796,19 @@ import { userInfo } from 'os'
 // }
 // console.log(new User().color)
 
+// namespace User {
+//   export let person1 = 'Tony'
+// }
+// namespace Member {
+//   export let person2 = 'John'
+// }
+// console.log(User.person1)
+// console.log(Member.person2)
+
 namespace User {
-  export let person1 = 'Tony'
+  export let name: string = 'Tommy'
+  export namespace Member {
+    export let age: number = 19
+  }
 }
-namespace Member {
-  export let person2 = 'John'
-}
-console.log(User.person1)
-console.log(Member.person2)
+console.log(User.Member.age)
