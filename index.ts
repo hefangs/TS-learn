@@ -1779,19 +1779,28 @@ import { userInfo } from 'os'
 // p.name = 'Tom'
 // console.log(p.name)
 
-const RandomColorDecorator: PropertyDecorator = (
-  target: Object,
-  propertyKey: string | symbol
-) => {
-  const colors: string[] = ['red', 'green', 'blue']
-  Object.defineProperty(target, propertyKey, {
-    get() {
-      return colors[Math.floor(Math.random() * colors.length)]
-    }
-  })
+// const RandomColorDecorator: PropertyDecorator = (
+//   target: Object,
+//   propertyKey: string | symbol
+// ) => {
+//   const colors: string[] = ['red', 'green', 'blue']
+//   Object.defineProperty(target, propertyKey, {
+//     get() {
+//       return colors[Math.floor(Math.random() * colors.length)]
+//     }
+//   })
+// }
+// class User {
+//   @RandomColorDecorator
+//   color: string | undefined
+// }
+// console.log(new User().color)
+
+namespace User {
+  export let person1 = 'Tony'
 }
-class User {
-  @RandomColorDecorator
-  color: string | undefined
+namespace Member {
+  export let person2 = 'John'
 }
-console.log(new User().color)
+console.log(User.person1)
+console.log(Member.person2)
