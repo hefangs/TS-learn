@@ -10,6 +10,8 @@
 // // // // //   return
 // // // // // }
 
+import { type } from 'os'
+
 // // // // // console.log(str)
 // // // // // console.log(num1, num2, num3)
 // // // // // console.log(n, u)
@@ -1809,12 +1811,34 @@
 //     export let age: number = 19
 //   }
 // }
-// console.log(User.Member.age)
-type User = {
+// // console.log(User.Member.age)
+
+// // interface继承type
+// type User1 = {
+//   name: string
+// }
+// interface Member1 extends User1 {
+//   age: number
+// }
+// let p1: Member1 = { name: 'Sammy', age: 11 }
+// console.log(p1)
+
+// // type继承interface
+// interface User2 {
+//   name: string
+// }
+// type User3 = { sex: string }
+
+// type Member2 = User3 &
+//   User2 & {
+//     age: number
+//   }
+// let p2: Member2 = { name: 'Hello', age: 12, sex: 'female' }
+// console.log(p2)
+interface Person {
   name: string
-}
-interface Member extends User {
   age: number
+  sex: string
+  skill: string
 }
-let p: Member = { name: 'Sammy', age: 11 }
-console.log(p)
+type PickPerson = Pick<Person, 'name' | 'age'>
