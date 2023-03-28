@@ -1835,10 +1835,17 @@ import { type } from 'os'
 //   }
 // let p2: Member2 = { name: 'Hello', age: 12, sex: 'female' }
 // console.log(p2)
+// interface Person {
+//   name: string
+//   age: number
+//   sex: string
+//   skill: string
+// }
+// type PickPerson = Pick<Person, 'name' | 'age'>
 interface Person {
   name: string
   age: number
   sex: string
-  skill: string
 }
-type PickPerson = Pick<Person, 'name' | 'age'>
+let User: Partial<Person> = { sex: 'female' }
+console.log(User)
