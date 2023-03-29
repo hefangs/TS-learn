@@ -10,6 +10,7 @@
 // // // // //   return
 // // // // // }
 
+import { timeStamp } from 'console'
 import { type } from 'os'
 
 // // // // // console.log(str)
@@ -1850,14 +1851,43 @@ import { type } from 'os'
 // let User: Partial<Person> = { sex: 'female' }
 // console.log(User)
 
-interface CatInfo {
-  age: number
-  skill: string
+// interface CatInfo {
+//   age: number
+//   skill: string
+// }
+// type CatName = 'A' | 'B' | 'C'
+// const cat: Record<CatName, CatInfo> = {
+//   A: { age: 1, skill: 'eat' },
+//   B: { age: 2, skill: 'run' },
+//   C: { age: 3, skill: 'sleep' }
+// }
+// console.log(cat)
+
+// class  继承 类型约束
+// class 修饰符 public protected private readonly
+//  super原理
+// 静态方法
+// get set
+
+abstract class Vue {
+  name: string | undefined
+  constructor(name?: string) {
+    this.name = name
+  }
+  getName() {
+    return this.name
+  }
+  abstract init(): void
 }
-type CatName = 'A' | 'B' | 'C'
-const cat: Record<CatName, CatInfo> = {
-  A: { age: 1, skill: 'eat' },
-  B: { age: 2, skill: 'run' },
-  C: { age: 3, skill: 'sleep' }
+class React extends Vue {
+  constructor() {
+    super()
+  }
+  init(): void {}
+  setName(name: string) {
+    this.name = name
+  }
 }
-console.log(cat)
+let r = new React()
+r.setName('tom')
+console.log(r.getName())
