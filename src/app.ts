@@ -2019,20 +2019,23 @@
 // }
 // type P = Options<Data>
 
-namespace A {
-  export const a = 1
-}
-namespace A {
-  export const b = 2
-}
-namespace A {
-  export const c = 3
-}
-console.log(A.a, A.b, A.c)
+// namespace A {
+//   export const a = 1
+// }
+// namespace A {
+//   export const b = 2
+// }
+// namespace A {
+//   export const c = 3
+// }
+// console.log(A.a, A.b, A.c)
 
-export namespace B {
-  export namespace C {
-    export const a1 = 100
-  }
-}
-console.log(B.C.a1)
+// export namespace B {
+//   export namespace C {
+//     export const a1 = 100
+//   }
+// }
+// console.log(B.C.a1)
+
+// /// <reference path="./app1.ts" />
+// /// <reference path="./app2.ts" />
