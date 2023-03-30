@@ -9,10 +9,6 @@
 // // // // // function myFn(): void {
 // // // // //   return
 // // // // // }
-
-import { log, timeStamp } from 'console'
-import { type } from 'os'
-
 // // // // // console.log(str)
 // // // // // console.log(num1, num2, num3)
 // // // // // console.log(n, u)
@@ -1900,13 +1896,31 @@ import { type } from 'os'
 // 可以重名合并
 
 // Symbol
-// let a1: symbol = Symbol(1)
-// let a2: symbol = Symbol(2)
+let a1: symbol = Symbol(1)
+let a2: symbol = Symbol(2)
 // console.log(a1, a2)
 // console.log(a1 === a2)
 // Symbol.for()
 // 全局有没有注册过这个key 如果有就拿来直接用，没有就创建一个
-let a1: symbol = Symbol.for('1')
-let a2: symbol = Symbol.for('1')
-console.log(a1, a2)
-console.log(a1 === a2)
+let a3: symbol = Symbol.for('1')
+let a4: symbol = Symbol.for('1')
+// console.log(a3, a4) // Symbol(1) Symbol(1)
+// console.log(a3 === a4) // true
+let obj = {
+  name: 'abc',
+  [a1]: 1,
+  [a2]: 2
+}
+console.log(obj) //{ name: 'abc', [Symbol(1)]: 1, [Symbol(2)]: 2 }
+// for in 不能读到symbol
+for (let key in obj) {
+  console.log(key) // name
+}
+// Object.keys 也读不到symbol
+console.log(Object.keys(obj)) // [ 'name' ]
+// Object.getOwnPropertyNames 也读不到symbol
+console.log(Object.getOwnPropertyNames(obj)) // [ 'name' ]
+// Object.setOwnPropertyNames  读到symbol但是name读不到
+console.log(Object.getOwnPropertySymbols(obj)) // [ Symbol(1), Symbol(2) ]
+// Reflect.ownKeys可以全部读到
+console.log(Reflect.ownKeys(obj)) // [ 'name', Symbol(1), Symbol(2) ]
