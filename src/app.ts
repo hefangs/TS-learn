@@ -1998,23 +1998,41 @@
 //   console.log(res.message)
 // })
 
-let obj = {
-  name: 'Tom',
-  age: 18,
-  sex: 'male'
-}
-type Keys = keyof typeof obj
-function ob<T extends object, K extends keyof T>(obj: T, key: K) {
-  return obj[key]
-}
-console.log(ob(obj, 'sex'))
+// let obj = {
+//   name: 'Tom',
+//   age: 18,
+//   sex: 'male'
+// }
+// type Keys = keyof typeof obj
+// function ob<T extends object, K extends keyof T>(obj: T, key: K) {
+//   return obj[key]
+// }
+// console.log(ob(obj, 'sex'))
 
-interface Data {
-  name: string
-  age: number
-  sex: string
+// interface Data {
+//   name: string
+//   age: number
+//   sex: string
+// }
+// type Options<T extends object> = {
+//   readonly [key in keyof T]?: T[key]
+// }
+// type P = Options<Data>
+
+namespace A {
+  export const a = 1
 }
-type Options<T extends object> = {
-  readonly [key in keyof T]?: T[key]
+namespace A {
+  export const b = 2
 }
-type P = Options<Data>
+namespace A {
+  export const c = 3
+}
+console.log(A.a, A.b, A.c)
+
+export namespace B {
+  export namespace C {
+    export const a1 = 100
+  }
+}
+console.log(B.C.a1)
