@@ -10,7 +10,7 @@
 // // // // //   return
 // // // // // }
 
-import { timeStamp } from 'console'
+import { log, timeStamp } from 'console'
 import { type } from 'os'
 
 // // // // // console.log(str)
@@ -1869,25 +1869,44 @@ import { type } from 'os'
 // 静态方法
 // get set
 
-abstract class Vue {
-  name: string | undefined
-  constructor(name?: string) {
-    this.name = name
-  }
-  getName() {
-    return this.name
-  }
-  abstract init(): void
-}
-class React extends Vue {
-  constructor() {
-    super()
-  }
-  init(): void {}
-  setName(name: string) {
-    this.name = name
-  }
-}
-let r = new React()
-r.setName('tom')
-console.log(r.getName())
+// abstract class Vue {
+//   name: string | undefined
+//   constructor(name?: string) {
+//     this.name = name
+//   }
+//   getName(
+//     return this.name
+//   }
+//   abstract init(): void
+// }
+// class React extends Vue {
+//   constructor() {
+//     super()
+//   }
+//   init(): void {}
+//   setName(name: string) {
+//     this.name = name
+//   }
+// }
+// let r = new React()
+// r.setName('tom')
+// console.log(r.getName())
+
+// type
+// 继承 &
+// 联合类型 |
+// interface
+// 继承 extends
+// 可以重名合并
+
+// Symbol
+// let a1: symbol = Symbol(1)
+// let a2: symbol = Symbol(2)
+// console.log(a1, a2)
+// console.log(a1 === a2)
+// Symbol.for()
+// 全局有没有注册过这个key 如果有就拿来直接用，没有就创建一个
+let a1: symbol = Symbol.for('1')
+let a2: symbol = Symbol.for('1')
+console.log(a1, a2)
+console.log(a1 === a2)
