@@ -1896,31 +1896,65 @@
 // 可以重名合并
 
 // Symbol
-let a1: symbol = Symbol(1)
-let a2: symbol = Symbol(2)
-// console.log(a1, a2)
-// console.log(a1 === a2)
-// Symbol.for()
-// 全局有没有注册过这个key 如果有就拿来直接用，没有就创建一个
-let a3: symbol = Symbol.for('1')
-let a4: symbol = Symbol.for('1')
-// console.log(a3, a4) // Symbol(1) Symbol(1)
-// console.log(a3 === a4) // true
-let obj = {
-  name: 'abc',
-  [a1]: 1,
-  [a2]: 2
-}
-console.log(obj) //{ name: 'abc', [Symbol(1)]: 1, [Symbol(2)]: 2 }
-// for in 不能读到symbol
-for (let key in obj) {
-  console.log(key) // name
-}
-// Object.keys 也读不到symbol
-console.log(Object.keys(obj)) // [ 'name' ]
-// Object.getOwnPropertyNames 也读不到symbol
-console.log(Object.getOwnPropertyNames(obj)) // [ 'name' ]
-// Object.setOwnPropertyNames  读到symbol但是name读不到
-console.log(Object.getOwnPropertySymbols(obj)) // [ Symbol(1), Symbol(2) ]
-// Reflect.ownKeys可以全部读到
-console.log(Reflect.ownKeys(obj)) // [ 'name', Symbol(1), Symbol(2) ]
+// let a1: symbol = Symbol(1)
+// let a2: symbol = Symbol(2)
+// // console.log(a1, a2)
+// // console.log(a1 === a2)
+// // Symbol.for()
+// // 全局有没有注册过这个key 如果有就拿来直接用，没有就创建一个
+// let a3: symbol = Symbol.for('1')
+// let a4: symbol = Symbol.for('1')
+// // console.log(a3, a4) // Symbol(1) Symbol(1)
+// // console.log(a3 === a4) // true
+// let obj = {
+//   name: 'abc',
+//   [a1]: 1,
+//   [a2]: 2
+// }
+// console.log(obj) //{ name: 'abc', [Symbol(1)]: 1, [Symbol(2)]: 2 }
+// // for in 不能读到symbol
+// for (let key in obj) {
+//   console.log(key) // name
+// }
+// // Object.keys 也读不到symbol
+// console.log(Object.keys(obj)) // [ 'name' ]
+// // Object.getOwnPropertyNames 也读不到symbol
+// console.log(Object.getOwnPropertyNames(obj)) // [ 'name' ]
+// // Object.setOwnPropertyNames  读到symbol但是name读不到
+// console.log(Object.getOwnPropertySymbols(obj)) // [ Symbol(1), Symbol(2) ]
+// // Reflect.ownKeys可以全部读到
+// console.log(Reflect.ownKeys(obj)) // [ 'name', Symbol(1), Symbol(2) ]
+
+// function* gen() {
+//   yield 1
+//   yield false
+//   yield Promise.resolve('hello')
+// }
+// const g = gen()
+// console.log(g.next())
+// console.log(g.next())
+// console.log(g.next())
+// console.log(g.next())
+// { value: 1, done: false }
+// { value: false, done: false }
+// { value: Promise { 'hello' }, done: false }
+// { value: undefined, done: true }
+
+let set = new Set()
+let a = NaN
+let b = NaN
+set.add(a)
+console.log(set)
+set.add(b)
+console.log(set) //Set(1) { NaN }
+// 此处NaN是相等的
+
+let set1 = new Set()
+let a1 = {}
+let b1 = {}
+set.add(a1)
+console.log(set1)
+set.add(b1)
+console.log(set1)
+// Set(2) { {}, {} }
+// 此处2个空对象是不相等
