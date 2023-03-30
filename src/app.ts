@@ -1960,12 +1960,40 @@
 // 此处2个空对象是不相等
 
 // set 属性和方法
-let set = new Set([2, 3, 4, 5])
-console.log(set) // Set(4) { 2, 3, 4, 5 }
-set.add(1) // Set(1) { 1 }
-console.log(set) // Set(5) { 2, 3, 4, 5, 1 }
-console.log(set.size) // 1
-console.log(set.has(1)) // true
-console.log(set.delete(1)) // true
-console.log(set.clear()) // undefined
-console.log(set) // Set(0) {}
+// let set = new Set([2, 3, 4, 5])
+// console.log(set) // Set(4) { 2, 3, 4, 5 }
+// set.add(1) // Set(1) { 1 }
+// console.log(set) // Set(5) { 2, 3, 4, 5, 1 }
+// console.log(set.size) // 1
+// console.log(set.has(1)) // true
+// console.log(set.delete(1)) // true
+// console.log(set.clear()) // undefined
+// console.log(set) // Set(0) {}
+// var { a, b } = { a: 3, b: 4 }
+// console.log(a, b) //结果为3，4
+// let _ab = { a: 1, b: 2 }
+// let c = _ab.a
+// let d = _ab.b
+// console.log(c, d)
+
+const axios = {
+  get<T>(url: string): Promise<T> {
+    return new Promise((resolve, reject) => {
+      let xhr: XMLHttpRequest = new XMLHttpRequest()
+      xhr.open('Get', url)
+      xhr.onreadystatechange = () => {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+          resolve(JSON.parse(xhr.responseText))
+        }
+      }
+      xhr.send(null)
+    })
+  }
+}
+interface Data {
+  message: string
+  code: number
+}
+axios.get<Data>('./data.json').then(res => {
+  console.log(res.message)
+})
