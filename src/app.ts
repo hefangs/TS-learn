@@ -1976,24 +1976,45 @@
 // let d = _ab.b
 // console.log(c, d)
 
-const axios = {
-  get<T>(url: string): Promise<T> {
-    return new Promise((resolve, reject) => {
-      let xhr: XMLHttpRequest = new XMLHttpRequest()
-      xhr.open('Get', url)
-      xhr.onreadystatechange = () => {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-          resolve(JSON.parse(xhr.responseText))
-        }
-      }
-      xhr.send(null)
-    })
-  }
+// const axios = {
+//   get<T>(url: string): Promise<T> {
+//     return new Promise((resolve, reject) => {
+//       let xhr: XMLHttpRequest = new XMLHttpRequest()
+//       xhr.open('Get', url)
+//       xhr.onreadystatechange = () => {
+//         if (xhr.readyState === 4 && xhr.status === 200) {
+//           resolve(JSON.parse(xhr.responseText))
+//         }
+//       }
+//       xhr.send(null)
+//     })
+//   }
+// }
+// interface Data {
+//   message: string
+//   code: number
+// }
+// axios.get<Data>('./data.json').then(res => {
+//   console.log(res.message)
+// })
+
+let obj = {
+  name: 'Tom',
+  age: 18,
+  sex: 'male'
 }
+type Keys = keyof typeof obj
+function ob<T extends object, K extends keyof T>(obj: T, key: K) {
+  return obj[key]
+}
+console.log(ob(obj, 'sex'))
+
 interface Data {
-  message: string
-  code: number
+  name: string
+  age: number
+  sex: string
 }
-axios.get<Data>('./data.json').then(res => {
-  console.log(res.message)
-})
+type Options<T extends object> = {
+  readonly [key in keyof T]?: T[key]
+}
+type P = Options<Data>
