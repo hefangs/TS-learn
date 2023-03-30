@@ -1940,21 +1940,32 @@
 // { value: Promise { 'hello' }, done: false }
 // { value: undefined, done: true }
 
-let set = new Set()
-let a = NaN
-let b = NaN
-set.add(a)
-console.log(set)
-set.add(b)
-console.log(set) //Set(1) { NaN }
+// let set = new Set()
+// let a = NaN
+// let b = NaN
+// set.add(a)
+// console.log(set)
+// set.add(b)
+// console.log(set) //Set(1) { NaN }
 // 此处NaN是相等的
 
-let set1 = new Set()
-let a1 = {}
-let b1 = {}
-set.add(a1)
-console.log(set1)
-set.add(b1)
-console.log(set1)
+// let set1 = new Set()
+// let a1 = {}
+// let b1 = {}
+// set1.add(a1)
+// console.log(set1)
+// set1.add(b1)
+// console.log(set1)
 // Set(2) { {}, {} }
 // 此处2个空对象是不相等
+
+// set 属性和方法
+let set = new Set([2, 3, 4, 5])
+console.log(set) // Set(4) { 2, 3, 4, 5 }
+set.add(1) // Set(1) { 1 }
+console.log(set) // Set(5) { 2, 3, 4, 5, 1 }
+console.log(set.size) // 1
+console.log(set.has(1)) // true
+console.log(set.delete(1)) // true
+console.log(set.clear()) // undefined
+console.log(set) // Set(0) {}
