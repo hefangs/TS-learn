@@ -2115,17 +2115,38 @@
 // a.fn()
 
 // 装饰器工厂
-const Http = (name: string, age: number) => {
-  const fn: ClassDecorator = target => {
-    target.prototype.name = name
-    target.prototype.fn = () => {
-      console.log(age)
-    }
+// const Http = (name: string, age: number) => {
+//   const fn: ClassDecorator = target => {
+//     target.prototype.name = name
+//     target.prototype.fn = () => {
+//       console.log(age)
+//     }
+//   }
+//   return fn
+// }
+// @Http('Tom', 19)
+// class A {}
+// let a = new A() as any
+// console.log(a.name)
+// a.fn()
+
+// MethodDecorator
+import axios from 'axios'
+const Http = (url: string) => {
+  const fn: MethodDecorator = (
+    target,
+    propertyKey,
+    descriptor: PropertyDescriptor
+  ) => {
+    axios.get('https://api.uixsj.cn/hitokoto/get?type=social').then(res => {
+      descriptor.value(res.data)
+    })
   }
   return fn
 }
-@Http('Tom', 19)
-class A {}
-let a = new A() as any
-console.log(a.name)
-a.fn()
+class A {
+  @Http('')
+  getList(data: any) {
+    console.log(data)
+  }
+}
