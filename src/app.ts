@@ -2131,22 +2131,54 @@
 // a.fn()
 
 // MethodDecorator
+// import axios from 'axios'
+// const Http = (url: string) => {
+//   const fn: MethodDecorator = (
+//     target,
+//     propertyKey,
+//     descriptor: PropertyDescriptor
+//   ) => {
+//     axios.get(url).then(res => {
+//       descriptor.value(res.data)
+//     })
+//   }
+//   return fn
+// }
+// class A {
+//   @Http('https://api.uixsj.cn/hitokoto/get?type=social')
+//   getList(data: any) {
+//     console.log(data)
+//   }
+// }
+
+// ParameterDecorator
 import axios from 'axios'
+import 'reflect-metadata'
 const Http = (url: string) => {
   const fn: MethodDecorator = (
     target,
     propertyKey,
     descriptor: PropertyDescriptor
   ) => {
-    axios.get('https://api.uixsj.cn/hitokoto/get?type=social').then(res => {
-      descriptor.value(res.data)
+    const key = Reflect.getMetadata('metadataKey', target)
+    axios.get(url).then(res => {
+      descriptor.value(key ? res.data : res.data[key])
     })
   }
   return fn
 }
+const Data: ParameterDecorator = (target, propertyKey, parameterIndex) => {
+  // console.log(target, propertyKey, parameterIndex)
+  Reflect.defineMetadata('metadataKey', 'data', target)
+}
+const Name: PropertyDecorator = (target, propertyKey) => {
+  // console.log(target, propertyKey)
+}
 class A {
-  @Http('')
-  getList(data: any) {
+  @Name
+  name: string = 'Tom'
+  @Http('https://api.uixsj.cn/hitokoto/get?type=social')
+  getList(@Data data: any) {
     console.log(data)
   }
 }
