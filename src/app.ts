@@ -2100,14 +2100,31 @@
 
 // decorator
 // 类装饰器 ClassDecorator
-const Http: ClassDecorator = target => {
-  // console.log(target)
-  target.prototype.name = 'Jackson'
-  target.prototype.fn = () => {
-    console.log(18)
+// const Http: ClassDecorator = target => {
+//   // console.log(target)
+//   target.prototype.name = 'Jackson'
+//   target.prototype.fn = () => {
+//     console.log(18)
+//   }
+// }
+// @Http
+// class A {}
+// let a = new A() as any
+
+// console.log(a.name)
+// a.fn()
+
+// 装饰器工厂
+const Http = (name: string, age: number) => {
+  const fn: ClassDecorator = target => {
+    target.prototype.name = name
+    target.prototype.fn = () => {
+      console.log(age)
+    }
   }
+  return fn
 }
-@Http
+@Http('Tom', 19)
 class A {}
 let a = new A() as any
 console.log(a.name)
