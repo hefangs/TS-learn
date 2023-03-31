@@ -2048,52 +2048,67 @@
 
 // mixins
 // 对象混入
-interface Name {
-  name: string
-}
-interface Age {
-  age: number
-}
-interface Sex {
-  sex: string
-}
-let a: Name = { name: 'John' }
-let b: Age = { age: 18 }
-let c: Sex = { sex: 'female' }
-let obj = Object.assign(a, b, c)
-// console.log(obj)
+// interface Name {
+//   name: string
+// }
+// interface Age {
+//   age: number
+// }
+// interface Sex {
+//   sex: string
+// }
+// let a: Name = { name: 'John' }
+// let b: Age = { age: 18 }
+// let c: Sex = { sex: 'female' }
+// let obj = Object.assign(a, b, c)
+// // console.log(obj)
 
-// class
-class A {
-  name: string
-  showName(): string {
-    return this.name
+// // class
+// class A {
+//   name: string
+//   showName(): string {
+//     return this.name
+//   }
+// }
+// class B {
+//   age: number
+//   showAge(): number {
+//     return this.age
+//   }
+// }
+// class C implements A, B {
+//   name: string = 'Mark'
+//   age: number = 18
+//   showName: () => string
+//   showAge: () => number
+// }
+// mixins(C, [A, B])
+// function mixins(curCls: any, itemCls: any[]) {
+//   itemCls.forEach(item => {
+//     // console.log(Object.getOwnPropertyNames(item.prototype)) // [ 'constructor', 'showName' ][ 'constructor', 'showAge' ]
+//     Object.getOwnPropertyNames(item.prototype).forEach(name => {
+//       console.log(item.prototype[name]) // [class A] [Function: showName] [class B][Function: showAge]
+//       curCls.prototype[name] = item.prototype[name]
+//     })
+//   })
+// }
+// let ccc = new C()
+// console.log(ccc.name)
+// console.log(ccc.age)
+// console.log(ccc.showName())
+// console.log(ccc.showAge())
+
+// decorator
+// 类装饰器 ClassDecorator
+const Http: ClassDecorator = target => {
+  // console.log(target)
+  target.prototype.name = 'Jackson'
+  target.prototype.fn = () => {
+    console.log(18)
   }
 }
-class B {
-  age: number
-  showAge(): number {
-    return this.age
-  }
-}
-class C implements A, B {
-  name: string = 'Mark'
-  age: number = 18
-  showName: () => string
-  showAge: () => number
-}
-mixins(C, [A, B])
-function mixins(curCls: any, itemCls: any[]) {
-  itemCls.forEach(item => {
-    // console.log(Object.getOwnPropertyNames(item.prototype)) // [ 'constructor', 'showName' ][ 'constructor', 'showAge' ]
-    Object.getOwnPropertyNames(item.prototype).forEach(name => {
-      console.log(item.prototype[name]) // [class A] [Function: showName] [class B][Function: showAge]
-      curCls.prototype[name] = item.prototype[name]
-    })
-  })
-}
-let ccc = new C()
-console.log(ccc.name)
-console.log(ccc.age)
-console.log(ccc.showName())
-console.log(ccc.showAge())
+@Http
+class A {}
+let a = new A() as any
+console.log(a.name)
+a.fn()
